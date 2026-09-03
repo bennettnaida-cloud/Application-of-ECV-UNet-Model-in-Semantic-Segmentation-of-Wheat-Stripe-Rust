@@ -48,7 +48,7 @@ python EI/run-wheat.py
 The default run uses the paper's ECV-UNet architecture, a deterministic 80/20 split, `96×96` inputs (matching the original loader configuration), 300 epochs, batch size 16, SGD with learning rate `1e-4`, and automatic CPU/GPU selection. To use the paper's stated `256×256` input size:
 
 ```bash
-python EI/run-wheat.py --image-size 256
+python EI/run-wheat.py
 ```
 
 Each run creates a timestamped directory under `EI/results/<model>/` containing `best_model.pth`, `training.jsonl`, TensorBoard scalars (when `tensorboardX` is installed), and optional predictions.
