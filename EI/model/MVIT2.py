@@ -97,11 +97,11 @@ class Attention(nn.Module):
             x = F.softmax(x, dim=-1)
 
         else:
-            q = q * self.scale
-            attn = q @ k.transpose(-2, -1)
-            attn = attn.softmax(dim=-1)
-            attn = self.attn_drop(attn)
-            x = attn @ v
+            s1 = (q1 * self.scale) @ k1.transpose(-2, -1)
+            s1 = self.attn_drop(s1.softmax(dim=-1)) @ v
+            s2 = (q2 * self.scale) @ k2.transpose(-2, -1)
+            s2 = self.attn_drop(s2.softmax(dim=-1)) @ v
+            x = (s1 + s2) * 2
 
         x = x.transpose(1, 2).reshape(B, N, C)
         x = self.proj(x)
