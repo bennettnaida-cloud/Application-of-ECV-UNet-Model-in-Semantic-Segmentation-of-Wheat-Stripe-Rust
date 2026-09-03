@@ -184,6 +184,8 @@ def main() -> None:
         raise ValueError("--valid-size must be in [0, 1)")
     if args.image_size <= 0 or args.batch_size <= 0 or args.epochs <= 0:
         raise ValueError("image size, batch size, and epochs must be positive")
+    if args.gpu < 0 or args.workers < 0:
+        raise ValueError("--gpu and --workers must be non-negative")
     if not 0 < args.threshold < 1:
         raise ValueError("--threshold must be in (0, 1)")
 
@@ -299,7 +301,11 @@ def main() -> None:
 
     if not best_path.exists():
         raise RuntimeError("No checkpoint was saved; validation did not complete")
-    model.load_state_dict(torch.load(best_path, map_location=device))
+    try:
+        checkpoint = torch.load(best_path, map_location=device, weights_only=True)
+    except TypeError:  # compatibility with older PyTorch releases
+        checkpoint = torch.load(best_path, map_location=device)
+    model.load_state_dict(checkpoint)
     final_metrics = evaluate(model, valid_loader, device, args.threshold)
     print("Best validation metrics:", json.dumps(final_metrics, ensure_ascii=False))
     if args.save_predictions:

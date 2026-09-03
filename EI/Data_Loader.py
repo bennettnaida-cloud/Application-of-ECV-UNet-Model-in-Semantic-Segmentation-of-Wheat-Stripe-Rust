@@ -113,8 +113,10 @@ class Images_Dataset_folder(torch.utils.data.Dataset):
 
     def __getitem__(self, idx):
         image_path, mask_path = self.pairs[idx]
-        image = Image.open(image_path).convert("RGB")
-        mask = Image.open(mask_path).convert("L")
+        with Image.open(image_path) as image_file:
+            image = image_file.convert("RGB")
+        with Image.open(mask_path) as mask_file:
+            mask = mask_file.convert("L")
 
         seed = random.getrandbits(32)
         random.seed(seed)
