@@ -1,0 +1,21 @@
+# Generated results and experiment artifacts
+EI/results/
+EI/rice-results/
+EI/wheat-results/
+EI/crack-results/
+*.log
+*.xdma-XPS-8930
+
+# Python caches
+__pycache__/
+*.py[cod]
+
+# Large pretrained weights (kept local, not uploaded)
+EI/model/**/*.pth
+EI/model/**/*.tar
+
+# Local environment/editor files
+.venv/
+venv/
+.idea/
+.vscode/
